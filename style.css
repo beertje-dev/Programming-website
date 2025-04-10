@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 0;
 }
+
 header {
     background-color: #333;
     color: #fff;
@@ -12,11 +13,62 @@ header {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
 }
-p {
-    font-size: 20px;
+
+nav {
+    background-color: #444;
     color: #fff;
     text-align: center;
+    border-radius: 20px;
+    margin: 10px auto;
+    width: fit-content;
 }
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    display: inline;
+    margin: 0 20px;
+}
+
+li a {
+    display: inline-block;
+    padding: 10px 20px;
+    transition: background-color 0.5s, box-shadow 0.5s, rotate 0.5s, color 0.5s;
+    border-radius: 20px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 30px;
+}
+
+li:hover a {
+    background-color: #fff;
+    box-shadow: 0 0 30px 10px #fff;
+    color: #000;
+    transform: rotate(5deg);
+}
+
+#welkomtext {
+    animation: zoom-in-zoom-out 10s ease infinite;
+    font-size: 100px;
+}
+
+.container {
+    width: 95%;
+    margin: 20px auto;
+}
+
+article {
+    background-color: #cacaca;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
 footer {
     background-color: #333;
     color: #fff;
@@ -24,121 +76,32 @@ footer {
     text-align: center;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
-    bottom: 100%;
-}
-#welkomtext {
-    animation: zoom-in-zoom-out 10s ease infinite;
-    font-size: 100px;
-}
-nav {
-    background-color: #444;
-    color: #fff;
-    text-align: center;
-    border-radius: 20px;
-}
-ul {
-
-    list-style-type: none;
-    /* padding: 5px; */
-}
-li {
-    display: inline;
-    margin-left: 20px;
-    margin-right: 20px;
+    position: relative;
 }
 
-li a {
-    display: inline-block; /* Voeg inline-block toe om padding correct toe te passen */
-    padding: 10px 20px; /* Pas padding toe op het a-element */
-    transition: background-color 0.5s, box-shadow 0.5s, rotate 0.5s, color 0.5s; /* Voeg transition toe voor het a-element */
-    border-radius: 20px;
-    
-}
-li:hover a {
-    background-color: #fff;
-    box-shadow: 0 0 30px 10px #fff; /* Voeg 10px spread radius toe */
-    border-radius: 20px;
-    color: #000000;
-    rotate: 5deg;
-}
-a {
-    font-size: 30px;
-    color: #fff;
-    text-decoration: none;
-}
-
-.split-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-.split {
-    display:inline-block;
-    width:100%;
-    height: 150px;
-    margin: 10px;
-
-    border-radius: 10px;
-    background-color: #cacaca;
-}
-
-#question {
-    text-align: center;
-    font-size: 30px;
-    color: #333;
-}
-#answers {
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    margin-top: 20px;
-}
-#next {
-    display: none;
-    left: 50%;
-    right: 50%;
-}
-.btn {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 20px;
-    text-align: center;
-    display: inline-block;
-    margin: 10px;
-    text-decoration: none;
-}
 @keyframes zoom-in-zoom-out {
     0% {
-      scale: 0%;
-      rotate: 365deg;
+      transform: scale(0) rotate(365deg);
     }    
     10% {
-      scale: 0%;
-      rotate: 365deg;
+      transform: scale(0) rotate(365deg);
     }
     20% {
-      scale: 100%;
-      rotate: -10deg;
+      transform: scale(1) rotate(-10deg);
     }
     40% {
-        scale: 100%;
-        rotate: 10deg;
+      transform: scale(1) rotate(10deg);
     }
     60% {
-        scale: 100%;
-        rotate: -10deg;
+      transform: scale(1) rotate(-10deg);
     }
     80% {
-        scale: 100%;
-        rotate: 10deg;
+      transform: scale(1) rotate(10deg);
     }
     90% {
-        scale: 100%;
-        rotate: -10deg;
+      transform: scale(1) rotate(-10deg);
     }
     100% {
-      scale: 0%;
-      rotate: 365deg;
+      transform: scale(0) rotate(365deg);
     }
-  }
+}
