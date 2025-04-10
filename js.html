@@ -1,41 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programing</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="js.html">JavaScript</a></li>
-                <li><a href="nodejs.html">Node.JS</a></li>
-                <li><a href="html.html">HTML</a></li>
-                <li><a href="csharp.html">C#</a></li>
-                <li><a href="quiz.html">Quiz</a></li>
-            </ul>
-        </nav>
-        <h1 id="welkomtext">JavaScript</h1>
-        <p>Welkom bij mijn engels opdracht over programeren klik boven in voor meer informatie over een bepaalt onderwerp</p>
-    </header>
-    <div class="container">
-        <div class="split-container">
-            <div class="split">
-                <p></p>
-            </div>
-            <div class="split">
-                <p></p>
-            </div>
-        </div>
-    </div>
-    <footer>
-        <p>&copy; Gino 2025</p>
-    </footer>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="js.html">JavaScript</a></li>
+        <li><a href="nodejs.html">Node.JS</a></li>
+        <li><a href="html.html">HTML</a></li>
+        <li><a href="csharp.html">C#</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+      </ul>
+    </nav>
+    <h1 id="welkomtext">JavaScript</h1>
+    <p>An overview of JavaScript and its role in modern web development.</p>
+  </header>
+  
+  <div class="container">
+    <article>
+      <h2>About JavaScript</h2>
+      <p>
+        JavaScript is an essential programming language that brings websites to life. It enables developers to add interactivity, dynamic content, and control multimedia elements on web pages. This page includes tutorials, examples, and articles that explain how JavaScript is used in practical applications.
+      </p>
+    </article>
+  </div>
+  
+  <footer>
+    <p>&copy; Gino 2025</p>
+  </footer>
+  <!-- Scroll to top knop -->
+  <button id="scrollToTopBtn">&#8679;</button>
+  
+  <!-- JavaScript voor de interactieve Scroll to top knop -->
+  <script>
+    const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+    
+    window.addEventListener("scroll", () => {
+      // Toon de knop wanneer we meer dan 300 pixels hebben gescrold
+      if (window.pageYOffset > 300) {
+        scrollToTopBtn.classList.add("show");
+      } else {
+        scrollToTopBtn.classList.remove("show");
+      }
+    });
+    
+    scrollToTopBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  </script>
 </body>
-
 </html>

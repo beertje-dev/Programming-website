@@ -1,26 +1,43 @@
-body {
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
+/* Importeer de Google Font 'Roboto' */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Zorg dat html en body de volledige hoogte van het scherm beslaan */
+html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
 }
 
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 7px 0;
-    text-align: center;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
+/* Maak van body een flex-container met een verticale richting */
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #e0f7fa, #fff);
+    color: #333;
 }
 
+/* Header styling met gradient en box-shadow */
+header {
+    background: linear-gradient(135deg, #1a73e8, #4285f4);
+    color: #fff;
+    padding: 15px 0;
+    text-align: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Navigatiebalk styling */
 nav {
-    background-color: #444;
+    background-color: rgba(68, 68, 68, 0.9);
     color: #fff;
     text-align: center;
-    border-radius: 20px;
+    border-radius: 30px;
     margin: 10px auto;
     width: fit-content;
+    padding: 5px 20px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 ul {
@@ -31,54 +48,118 @@ ul {
 
 li {
     display: inline;
-    margin: 0 20px;
+    margin: 0 15px;
 }
 
+/* Navigatie links met hover-effect en extra animatie */
 li a {
     display: inline-block;
-    padding: 10px 20px;
-    transition: background-color 0.5s, box-shadow 0.5s, rotate 0.5s, color 0.5s;
-    border-radius: 20px;
+    padding: 10px 15px;
+    transition: background-color 0.4s, box-shadow 0.4s, transform 0.4s, color 0.4s;
+    border-radius: 25px;
     color: #fff;
     text-decoration: none;
-    font-size: 30px;
+    font-size: 22px;
+    font-weight: 500;
 }
 
-li:hover a {
+li a:hover {
     background-color: #fff;
-    box-shadow: 0 0 30px 10px #fff;
-    color: #000;
-    transform: rotate(5deg);
+    box-shadow: 0 0 15px 5px rgba(66, 133, 244, 0.5);
+    color: #1a73e8;
+    transform: rotate(2deg) scale(1.05);
 }
 
+/* Welkomsttekst met animatie */
 #welkomtext {
     animation: zoom-in-zoom-out 10s ease infinite;
-    font-size: 100px;
+    font-size: 70px;
+    margin: 10px 0;
 }
 
+/* Container: groepeer content en laat deze de beschikbare ruimte vullen */
 .container {
+    flex: 1;
     width: 95%;
-    margin: 20px auto;
-}
-
-article {
-    background-color: #cacaca;
-    border-radius: 10px;
+    margin: 30px auto;
     padding: 20px;
+}
+
+/* Artikel styling: lichte achtergrond, padding, afgeronde hoeken en schaduw */
+article {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Overige tekstsecties */
+.info, .introduction, .content, .reflection {
     margin-bottom: 20px;
-    color: #333;
 }
 
+h2 {
+    border-bottom: 2px solid #4285f4;
+    padding-bottom: 5px;
+}
+
+/* Footer styling met gradient en shadow en zorg ervoor dat hij altijd onderaan komt */
 footer {
-    background-color: #333;
+    background: linear-gradient(135deg, #4285f4, #1a73e8);
     color: #fff;
-    padding: 10px 0;
+    padding: 15px 0;
     text-align: center;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
-    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* Scroll to top knop */
+#scrollToTopBtn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Toon de knop wanneer actief */
+#scrollToTopBtn.show {
+    opacity: 1;
+    pointer-events: auto;
+    animation: bounce 1s;
+}
+
+/* Bounce keyframes voor de knop */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+/* Responsive aanpassing voor kleinere schermen */
+@media (max-width: 768px) {
+    li a {
+        font-size: 18px;
+        padding: 8px 12px;
+    }
+    #welkomtext {
+        font-size: 50px;
+    }
+}
+
+/* Keyframes voor de welkomsttekst animatie */
 @keyframes zoom-in-zoom-out {
     0% {
       transform: scale(0) rotate(365deg);

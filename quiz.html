@@ -1,43 +1,908 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programing</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Programming Quiz - Choose Difficulty</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Algemene pagina-styling */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #fff);
+      margin: 0;
+      padding: 0;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header, footer {
+      text-align: center;
+      padding: 15px 0;
+      background: linear-gradient(135deg, #1a73e8, #4285f4);
+      color: #fff;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    nav li {
+      display: inline;
+      margin: 0 15px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    .container {
+      flex: 1;
+      padding: 20px;
+    }
+    /* Start-container: Drie knoppen voor de moeilijkheidsgraden */
+    .start-container {
+      text-align: center;
+      margin-top: 80px;
+    }
+    .difficulty-btn {
+      padding: 15px 30px;
+      font-size: 22px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px;
+      transition: transform 0.6s, opacity 0.6s;
+    }
+    .easy-btn {
+      background-color: #34a853;
+      color: #fff;
+    }
+    .normal-btn {
+      background-color: #fbbc05;
+      color: #333;
+    }
+    .hard-btn {
+      background-color: #ea4335;
+      color: #fff;
+    }
+    .difficulty-btn.hide {
+      transform: scale(2);
+      opacity: 0;
+    }
+    /* Quiz-container */
+    .quiz-container {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 30px;
+      margin: 30px auto;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      position: relative;
+      display: none;  /* Wordt getoond zodra de quiz start */
+    }
+    /* Container voor vraag/antwoord */
+    .quizContentContainer {
+      opacity: 0;
+    }
+    .quiz-question {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .quiz-options {
+      margin-bottom: 20px;
+    }
+    .quiz-options button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #1a73e8;
+      color: #fff;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .quiz-options button:hover {
+      background-color: #4285f4;
+      transform: scale(1.03);
+    }
+    /* Feedback styling, met verhoogde margin-top zodat deze hoger verschijnt */
+    .feedback {
+      font-size: 22px;
+      margin: 50px 0 20px;
+      opacity: 0;
+    }
+    .feedback.big {
+      font-size: 48px;
+    }
+    .feedback.correct {
+      color: #34a853;
+    }
+    .feedback.incorrect {
+      color: #ea4335;
+    }
+    .final-score {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    /* Lijst met fouten */
+    .mistakes-list {
+      text-align: left;
+      margin-top: 20px;
+    }
+    .mistake-item {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .mistake-item:last-child {
+      border-bottom: none;
+    }
+    /* Animaties */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-40px); }
+    }
+    @keyframes fadeInZoom {
+      from { opacity: 0; transform: scale(0.4); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .fade-in {
+      animation: fadeIn 1s forwards;
+    }
+    .fade-out {
+      animation: fadeOut 0.8s forwards;
+    }
+    .zoom-in {
+      animation: fadeInZoom 1s forwards;
+    }
+  </style>
 </head>
-
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="js.html">JavaScript</a></li>
-                <li><a href="nodejs.html">Node.JS</a></li>
-                <li><a href="html.html">HTML</a></li>
-                <li><a href="csharp.html">C#</a></li>
-                <li><a href="quiz.html">Quiz</a></li>
-            </ul>
-        </nav>
-        <h1 id="welkomtext">Quiz</h1>
-        <p>Welkom bij mijn engels opdracht over programeren klik boven in voor meer informatie over een bepaalt
-            onderwerp</p>
-    </header>
-    <div class="container">
-        <div id="split-container">
-            <div class="split">
-                <h1 id="question">Vraag komt hier...</h1>
-                <div id="answers"></div>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="js.html">JavaScript</a></li>
+        <li><a href="nodejs.html">Node.JS</a></li>
+        <li><a href="html.html">HTML</a></li>
+        <li><a href="csharp.html">C#</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+      </ul>
+    </nav>
+    <h1 id="welkomtext">Interactive Programming Quiz</h1>
+    <p>Test your programming knowledge!</p>
+  </header>
 
-                <button id="next" class="btn" onclick="nextQuestion()">Volgende</button>
-            </div>
-        </div>
+  <div class="container">
+    <!-- Start-container met 3 moeilijkheidsknoppen -->
+    <div class="start-container" id="startContainer">
+      <button class="difficulty-btn easy-btn" id="easyBtn">Easy Quiz (9 Questions)</button>
+      <button class="difficulty-btn normal-btn" id="normalBtn">Normal Quiz (19 Questions)</button>
+      <button class="difficulty-btn hard-btn" id="hardBtn">Hard Quiz (30 Questions)</button>
     </div>
-    <footer>
-        <p>&copy; <a href="https://github.com/beertje-dev">Gino</a> 2025</p>
-    </footer>
-    <script src="script.js"></script>
-</body>
+    <!-- Quiz-container: wordt getoond na selectie -->
+    <div class="quiz-container" id="quizContainer">
+      <div id="quizContent" class="quizContentContainer"></div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+  </div>
 
+  <footer>
+    <p>&copy; Gino 2025</p>
+  </footer>
+
+  <!-- Optional scroll-to-top knop -->
+  <button id="scrollToTopBtn">&#8679;</button>
+
+  <script>
+    /***** Quiz Data Arrays per moeilijkheidsgraad *****/
+    // Easy Quiz: 10 vragen
+    const quizDataEasy = [
+      {
+        question: "What does HTML stand for?",
+        options: [
+          "HyperText Markup Language",
+          "Home Tool Markup Language",
+          "Hyperlinks Text Markup Language"
+        ],
+        correct: 0
+      },
+      {
+        question: "What does CSS stand for?",
+        options: [
+          "Cascading Style Sheets",
+          "Computer Style Sheets",
+          "Creative Style Sheets"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which language is primarily used for styling web pages?",
+        options: [
+          "HTML",
+          "CSS",
+          "JavaScript"
+        ],
+        correct: 1
+      },
+      {
+        question: "Which language is known as the language of the web?",
+        options: [
+          "Java",
+          "JavaScript",
+          "Python"
+        ],
+        correct: 1
+      },
+      {
+        question: "Which language is used for structuring web pages?",
+        options: [
+          "HTML",
+          "CSS",
+          "C++"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which of these is a valid HTML tag?",
+        options: [
+          "div",
+          "image",
+          "bodyy"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which property changes the background color in CSS?",
+        options: [
+          "bgColor",
+          "background-color",
+          "color-background"
+        ],
+        correct: 1
+      },
+
+      {
+        question: "Which HTML element is used for inserting a line break?",
+        options: [
+          "break",
+          "br",
+          "lb"
+        ],
+        correct: 1
+      },
+      {
+        question: "What does API stand for?",
+        options: [
+          "Application Programming Interface",
+          "Advanced Programming Interface",
+          "Applied Program Interaction"
+        ],
+        correct: 0
+      }
+    ];
+
+    // Normal Quiz: 20 vragen (uniek, met wat meer inhoud)
+    const quizDataNormal = [
+      {
+        question: "Which of these is NOT a programming language?",
+        options: [
+          "HTML",
+          "Python",
+          "C++"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which company developed JavaScript?",
+        options: [
+          "Netscape",
+          "Microsoft",
+          "Apple"
+        ],
+        correct: 0
+      },
+      {
+        question: "What is the primary purpose of CSS?",
+        options: [
+          "Structure web content",
+          "Style and layout",
+          "Add interactivity"
+        ],
+        correct: 1
+      },
+      {
+        question: "Which HTML element defines the document's head?",
+        options: [
+          "head",
+          "header",
+          "body"
+        ],
+        correct: 0
+      },
+
+      {
+        question: "Which of these is a popular JavaScript framework?",
+        options: [
+          "React",
+          "Laravel",
+          "Django"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which HTML attribute is used for inline styles?",
+        options: [
+          "class",
+          "style",
+          "id"
+        ],
+        correct: 1
+      },
+      {
+        question: "How do you select an element with id 'header' in CSS?",
+        options: [
+          ".header",
+          "#header",
+          "header"
+        ],
+        correct: 1
+      },
+      {
+        question: "What does the CSS property 'float' do?",
+        options: [
+          "Positions an element to the left or right",
+          "Aligns text",
+          "Changes opacity"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which language is used for adding interactivity to web pages?",
+        options: [
+          "JavaScript",
+          "HTML",
+          "CSS"
+        ],
+        correct: 0
+      },
+      {
+        question: "What is the result of '2' + 2 in JavaScript?",
+        options: [
+          "22",
+          "4",
+          "NaN"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which method parses a JSON string in JavaScript?",
+        options: [
+          "JSON.parse()",
+          "JSON.stringify()",
+          "JSON.convert()"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which HTML element is used to display a picture?",
+        options: [
+          "img",
+          "picture",
+          "src"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which CSS property controls the size of an element's border?",
+        options: [
+          "border-width",
+          "border-size",
+          "border-style"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which HTML element defines a table header?",
+        options: [
+          "th",
+          "td",
+          "header"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which HTML attribute adds alternative text to an image?",
+        options: [
+          "alt",
+          "title",
+          "src"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which JavaScript loop iterates over an array?",
+        options: [
+          "for",
+          "if",
+          "switch"
+        ],
+        correct: 0
+      },
+      {
+        question: "In CSS, which property changes the text color?",
+        options: [
+          "color",
+          "text-color",
+          "font-color"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which data type is NOT primitive in JavaScript?",
+        options: [
+          "String",
+          "Number",
+          "Object"
+        ],
+        correct: 2
+      },
+      {
+        question: "What does SQL stand for?",
+        options: [
+          "Structured Query Language",
+          "Strong Question Language",
+          "Styled Query Language"
+        ],
+        correct: 0
+      }
+    ];
+
+    // Hard Quiz: 30 vragen (meer diepgaande en complexe vragen)
+    const quizDataHard = [
+      {
+        question: "What is the output of 'console.log(typeof NaN)' in JavaScript?",
+        options: [
+          "number",
+          "NaN",
+          "undefined"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which method creates a deep copy of an object in JavaScript?",
+        options: [
+          "JSON.parse(JSON.stringify(obj))",
+          "Object.assign({}, obj)",
+          "Both",
+        ],
+        correct: 0
+      },
+      {
+        question: "In CSS, what does the 'z-index' property affect?",
+        options: [
+          "Stacking order of positioned elements",
+          "Visibility of text",
+          "Border radius"
+        ],
+        correct: 0
+      },
+      {
+        question: "What does the 'this' keyword refer to in a JavaScript function in the global scope?",
+        options: [
+          "The global object",
+          "The function itself",
+          "Undefined"
+        ],
+        correct: 0
+      },
+      {
+        question: "In HTML5, which element is used to embed video content?",
+        options: [
+          "video",
+          "media",
+          "movie"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which programming paradigm does JavaScript primarily support?",
+        options: [
+          "Object-Oriented",
+          "Functional",
+          "Both"
+        ],
+        correct: 2
+      },
+      {
+        question: "What is a closure in JavaScript?",
+        options: [
+          "A function accessing its own, outer, and global scope",
+          "A variable that closes an event",
+          "A CSS property"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which SQL command is used to retrieve data from a database?",
+        options: [
+          "SELECT",
+          "UPDATE",
+          "INSERT"
+        ],
+        correct: 0
+      },
+      {
+        question: "In CSS, what does the 'calc()' function do?",
+        options: [
+          "Performs calculations to determine CSS property values",
+          "Calculates the length of text",
+          "Modifies the background image"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which property in CSS creates space between an element's border and content?",
+        options: [
+          "margin",
+          "padding",
+          "border-spacing"
+        ],
+        correct: 1
+      },
+      {
+        question: "What is the primary difference between '==' and '===' in JavaScript?",
+        options: [
+          "Type coercion is allowed with '=='",
+          "They are identical",
+          "'===' performs type conversion"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which operator is used to check for strict equality in JavaScript?",
+        options: [
+          "==",
+          "===",
+          "="
+        ],
+        correct: 1
+      },
+      {
+        question: "In SQL, which keyword is used to sort the result-set?",
+        options: [
+          "ORDER BY",
+          "SORT BY",
+          "GROUP BY"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which HTML5 element is used for drawing graphics via JavaScript?",
+        options: [
+          "canvas",
+          "svg",
+          "draw"
+        ],
+        correct: 0
+      },
+      {
+        question: "What does the 'async' keyword do in JavaScript?",
+        options: [
+          "Defines an asynchronous function",
+          "Waits for a promise to resolve",
+          "Both"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which of these is NOT a JavaScript framework?",
+        options: [
+          "React",
+          "Angular",
+          "Laravel"
+        ],
+        correct: 2
+      },
+      {
+        question: "In CSS, which property makes text bold?",
+        options: [
+          "font-weight",
+          "text-style",
+          "font-style"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which method removes whitespace from both ends of a string in JavaScript?",
+        options: [
+          "trim()",
+          "slice()",
+          "split()"
+        ],
+        correct: 0
+      },
+      {
+        question: "What does JSON stand for?",
+        options: [
+          "JavaScript Object Notation",
+          "Java Serialized Object Notation",
+          "JavaScript Oriented Notation"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which CSS property changes the spacing between lines of text?",
+        options: [
+          "line-height",
+          "letter-spacing",
+          "word-spacing"
+        ],
+        correct: 0
+      },
+      {
+        question: "In JavaScript, what is 'NaN' considered as?",
+        options: [
+          "A number",
+          "Not a Number",
+          "Undefined"
+        ],
+        correct: 1
+      },
+      {
+        question: "Which HTTP status code indicates 'Not Found'?",
+        options: [
+          "200",
+          "404",
+          "500"
+        ],
+        correct: 1
+      },
+      {
+        question: "What is the purpose of the 'reduce()' method in JavaScript arrays?",
+        options: [
+          "To reduce the array to a single value",
+          "To shorten the array length",
+          "To remove duplicates"
+        ],
+        correct: 0
+      },
+      {
+        question: "In SQL, which command is used to modify data in a database?",
+        options: [
+          "UPDATE",
+          "ALTER",
+          "MODIFY"
+        ],
+        correct: 0
+      },
+      {
+        question: "In HTML, which attribute specifies the source URL of an image?",
+        options: [
+          "src",
+          "href",
+          "alt"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which JavaScript function logs information to the console?",
+        options: [
+          "console.log()",
+          "alert()",
+          "document.write()"
+        ],
+        correct: 0
+      },
+      {
+        question: "In CSS, how do you select all <p> elements inside a <div> element?",
+        options: [
+          "div p",
+          ".div p",
+          "div > p"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which method converts an object into a JSON string in JavaScript?",
+        options: [
+          "JSON.stringify()",
+          "JSON.parse()",
+          "JSON.toString()"
+        ],
+        correct: 0
+      },
+      {
+        question: "What does 'responsive design' refer to in web development?",
+        options: [
+          "Design that adapts to different screen sizes",
+          "Design with animations",
+          "Design with multiple colors"
+        ],
+        correct: 0
+      },
+      {
+        question: "In JavaScript, what is the purpose of the 'new' keyword?",
+        options: [
+          "To create an instance of an object",
+          "To call a function",
+          "To declare a variable"
+        ],
+        correct: 0
+      }
+    ];
+
+    // Variabele die de gekozen quizdata opslaat
+    let currentQuizData = [];
+    // Array om foute antwoorden bij te houden
+    const mistakes = [];
+    let currentQuestion = 0;
+    let score = 0;
+
+    const startContainer = document.getElementById('startContainer');
+    const easyBtn = document.getElementById('easyBtn');
+    const normalBtn = document.getElementById('normalBtn');
+    const hardBtn = document.getElementById('hardBtn');
+    const quizContainer = document.getElementById('quizContainer');
+    const quizContent = document.getElementById('quizContent');
+    const feedbackEl = document.getElementById('feedback');
+    const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+    // Laadt de huidige vraag in quizContent met fade-in
+    function loadQuestion() {
+      // Reset inhoud en feedback
+      quizContent.innerHTML = "";
+      feedbackEl.innerHTML = "";
+      feedbackEl.className = "feedback";
+      quizContent.classList.remove("fade-out", "fade-in");
+
+      if (currentQuestion < currentQuizData.length) {
+        const currentData = currentQuizData[currentQuestion];
+        let html = `<div class="quiz-question">${currentData.question}</div>`;
+        html += `<div class="quiz-options">`;
+        currentData.options.forEach((option, index) => {
+          html += `<button onclick="selectAnswer(${index})">${option}</button>`;
+        });
+        html += `</div>`;
+        quizContent.innerHTML = html;
+        // Laat de vraag fade-in
+        quizContent.classList.add("fade-in");
+      } else {
+        loadResults();
+      }
+    }
+
+    // Verwerkt het antwoord, fade-out vraag, toon feedback en sla fouten op indien nodig
+    function selectAnswer(selected) {
+      const currentData = currentQuizData[currentQuestion];
+      // Maak knoppen in quiz-options niet meer klikbaar
+      const buttons = document.querySelectorAll('.quiz-options button');
+      buttons.forEach(btn => btn.disabled = true);
+
+      // Fade-out de vraag en opties
+      quizContent.classList.remove("fade-in");
+      quizContent.classList.add("fade-out");
+
+      // Na 0.8 sec (fade-out duur) tonen we de feedback met zoom-in effect
+      setTimeout(() => {
+        if (selected === currentData.correct) {
+          feedbackEl.innerHTML = 'Good Job! 👍';
+          feedbackEl.classList.add("correct", "big", "zoom-in");
+          score++;
+        } else {
+          feedbackEl.innerHTML = 'Try again next time! 👎';
+          feedbackEl.classList.add("incorrect", "big", "zoom-in");
+          // Sla fout op in mistakes-array
+          mistakes.push({
+            index: currentQuestion,
+            question: currentData.question,
+            givenAnswer: currentData.options[selected],
+            correctAnswer: currentData.options[currentData.correct]
+          });
+        }
+        // Laat feedback 1.5 sec in beeld, daarna fade-out de feedback en laad de volgende vraag
+        setTimeout(() => {
+          feedbackEl.classList.remove("zoom-in");
+          feedbackEl.classList.add("fade-out");
+          setTimeout(() => {
+            currentQuestion++;
+            feedbackEl.classList.remove("fade-out");
+            loadQuestion();
+          }, 500); // 0.8 sec fade-out feedback
+        }, 1000);
+      }, 500); // wacht 0.8 sec nadat vraag is weggefade
+    }
+
+    // Laadt het resultaat-scherm: score + overzicht fouten
+    function loadResults() {
+      let resultHTML = `<div class="final-score">Your score is ${score} out of ${currentQuizData.length}!</div>`;
+      if (mistakes.length > 0) {
+        resultHTML += `<div class="mistakes-list"><h3>Review your mistakes:</h3>`;
+        mistakes.forEach(item => {
+          resultHTML += `<div class="mistake-item">
+            <strong>Question ${item.index + 1}:</strong> ${item.question}<br>
+            <strong>Your Answer:</strong> ${item.givenAnswer}<br>
+            <strong>Correct Answer:</strong> ${item.correctAnswer}
+          </div>`;
+        });
+        resultHTML += `</div>`;
+      } else {
+        resultHTML += `<div class="mistakes-list"><h3>Great Job! You made no mistakes.</h3></div>`;
+      }
+      quizContent.innerHTML = resultHTML;
+      feedbackEl.innerHTML = "";
+      quizContent.classList.add("fade-in");
+    }
+
+    // Functie om de gekozen moeilijkheidsgraad in te stellen en de quiz te starten
+    function startQuiz(selectedDifficulty) {
+      // Reset variabelen
+      mistakes.length = 0;
+      currentQuestion = 0;
+      score = 0;
+
+      // Stel de juiste quizdata in op basis van gekozen moeilijkheid
+      if (selectedDifficulty === 'easy') {
+        currentQuizData = quizDataEasy;
+      } else if (selectedDifficulty === 'normal') {
+        currentQuizData = quizDataNormal;
+      } else if (selectedDifficulty === 'hard') {
+        currentQuizData = quizDataHard;
+      }
+      // Verberg de start-container en toon de quiz-container
+      startContainer.style.display = "none";
+      quizContainer.style.display = "block";
+      loadQuestion();
+    }
+
+    // Event listeners voor de drie moeilijkheidsknoppen
+    easyBtn.addEventListener("click", () => {
+      easyBtn.classList.add("hide");
+      normalBtn.classList.add("hide");
+      hardBtn.classList.add("hide");
+      setTimeout(() => {
+        startQuiz('easy');
+      }, 600);
+    });
+    normalBtn.addEventListener("click", () => {
+      easyBtn.classList.add("hide");
+      normalBtn.classList.add("hide");
+      hardBtn.classList.add("hide");
+      setTimeout(() => {
+        startQuiz('normal');
+      }, 600);
+    });
+    hardBtn.addEventListener("click", () => {
+      easyBtn.classList.add("hide");
+      normalBtn.classList.add("hide");
+      hardBtn.classList.add("hide");
+      setTimeout(() => {
+        startQuiz('hard');
+      }, 600);
+    });
+
+    // Scroll-to-top functionaliteit (optioneel)
+    window.addEventListener("scroll", () => {
+      if (window.pageYOffset > 300) {
+        scrollToTopBtn.classList.add("show");
+      } else {
+        scrollToTopBtn.classList.remove("show");
+      }
+    });
+    scrollToTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
 </html>
